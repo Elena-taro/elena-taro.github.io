@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>К ТАРО нежно — почему сложно в отношениях? | Елена</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffe4ec;
+            font-family: 'Inter', sans-serif;
+            color: #5e2e3e;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 24px 20px 48px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f5c0ce;
+        }
+        .name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.6rem;
+            font-weight: 600;
+            color: #b84c66;
+            margin-bottom: 8px;
+        }
+        .channel {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #b86b82;
+            margin-bottom: 12px;
+        }
+        .test-title {
+            font-size: 1.8rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: #b84c66;
+            background: #ffebf0;
+            display: inline-block;
+            padding: 8px 22px;
+            border-radius: 60px;
+            margin-top: 6px;
+        }
+
+        .test-card {
+            background: #ffffff;
+            border-radius: 36px;
+            padding: 28px 22px 34px;
+            box-shadow: 0 12px 28px rgba(150, 60, 80, 0.1);
+            margin: 28px 0;
+            border: 1px solid #f5c0ce;
+        }
+
+        .question-text {
+            font-size: 1.55rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            color: #5e2e3e;
+            margin-bottom: 28px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .option-btn {
+            background: #fff5f8;
+            border: 1px solid #e6aebb;
+            border-radius: 100px;
+            padding: 14px 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #5e2e3e;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .option-btn:hover {
+            background: #ffe4ec;
+            border-color: #d47d96;
+            transform: translateX(6px);
+        }
+
+        .progress {
+            font-size: 0.8rem;
+            color: #c97b92;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .result-area {
+            background: #fffafc;
+            border-radius: 28px;
+            padding: 28px 20px;
+            text-align: center;
+            border-left: 6px solid #b84c66;
+        }
+
+        .result-name {
+            font-size: 1.8rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            color: #b84c66;
+            margin-bottom: 12px;
+        }
+        .result-desc {
+            font-size: 1rem;
+            color: #6e3a4a;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+        .reset-btn {
+            background: transparent;
+            border: 1px solid #e6aebb;
+            padding: 8px 22px;
+            border-radius: 40px;
+            color: #b84c66;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .reset-btn:hover {
+            background: #ffe4ec;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .btn-telegram {
+            background: #b84c66;
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 48px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+        .btn-telegram:hover {
+            background: #9c3d55;
+            transform: scale(1.01);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #f5c0ce;
+            font-size: 0.75rem;
+            color: #c97b92;
+        }
+
+        @media (max-width: 550px) {
+            .question-text { font-size: 1.35rem; }
+            .test-title { font-size: 1.4rem; }
+            .name { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="name">Елена</div>
+        <div class="channel">К ТАРО нежно</div>
+        <div class="test-title">💗 Почему сложно в отношениях?</div>
+    </div>
+
+    <div class="test-card" id="testApp">
+        <div id="quizContainer"></div>
+    </div>
+
+    <div class="buttons">
+        <a href="https://t.me/kTaro_nezhno" target="_blank" class="btn-telegram">💬 Разобрать мой сценарий</a>
+    </div>
+
+    <div class="footer">
+        Елена · К ТАРО нежно · бережно о сердце
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            text: "Что ты чувствуешь, когда партнёр закрывается или молчит?",
+            options: [
+                { text: "Обиду и злость — почему он так со мной?", points: "anger" },
+                { text: "Страх, что я сделала что-то не так", points: "guilt" },
+                { text: "Желание его спасти или разговорить", points: "lose" },
+                { text: "Тоже закрываюсь и жду", points: "ice" }
+            ]
+        },
+        {
+            text: "Как ты чаще всего ведёшь себя в конфликте?",
+            options: [
+                { text: "Молчу, но внутри всё кипит", points: "ice" },
+                { text: "Срываюсь, потом виню себя", points: "anger" },
+                { text: "Пытаюсь объяснить, но меня не слышат", points: "guilt" },
+                { text: "Делаю вид, что всё нормально", points: "lose" }
+            ]
+        },
+        {
+            text: "Какая мысль приходит чаще всего в отношениях?",
+            options: [
+                { text: "«Почему я всегда на втором месте?»", points: "anger" },
+                { text: "«Я всё делаю не так»", points: "guilt" },
+                { text: "«Боюсь раствориться, если откроюсь»", points: "lose" },
+                { text: "«Легче молчать, чем говорить правду»", points: "ice" }
+            ]
+        },
+        {
+            text: "Чего тебе не хватает в паре прямо сейчас?",
+            options: [
+                { text: "Тепла и принятия", points: "ice" },
+                { text: "Чётких границ", points: "anger" },
+                { text: "Честного разговора", points: "guilt" },
+                { text: "Простого «ты мне нужна»", points: "lose" }
+            ]
+        }
+    ];
+
+    const results = {
+        guilt: {
+            name: "🌧️ Сценарий: «Я всегда виновата»",
+            description: "Ты часто извиняешься, даже когда не права. Тебе кажется, что если партнёр недоволен — это ты сделала что-то не так. Этот сценарий не про любовь, а про привычку спасать отношения через жертву.",
+            icon: "🕯️"
+        },
+        anger: {
+            name: "🌪️ Сценарий: «Меня не слышат»",
+            description: "Ты злишься, потому что твои чувства обесценивают. Но за злостью часто стоит боль и желание быть замеченной. Пока ты кричишь — тебя слышат реже.",
+            icon: "🔥"
+        },
+        lose: {
+            name: "🌫️ Сценарий: «Боюсь потерять себя»",
+            description: "Ты боишься открыться, потому что страшно раствориться в другом. Ты держишь дистанцию, даже когда очень хочется близости. От этого любовь становится тяжёлой.",
+            icon: "🪶"
+        },
+        ice: {
+            name: "❄️ Сценарий: «Ледяная крепость»",
+            description: "Тебе легче молчать и терпеть, чем говорить правду. Ты замораживаешь свои чувства, чтобы не было больно. Но вместе с болью замерзает и живое тепло.",
+            icon: "🧊"
+        }
+    };
+
+    let currentIndex = 0;
+    let scores = { guilt: 0, anger: 0, lose: 0, ice: 0 };
+    let active = true;
+
+    function getTop() {
+        let max = -1;
+        let top = "guilt";
+        for (let [k, v] of Object.entries(scores)) {
+            if (v > max) { max = v; top = k; }
+        }
+        return top;
+    }
+
+    function render() {
+        const container = document.getElementById('quizContainer');
+        if (!active && currentIndex >= questions.length) {
+            const top = getTop();
+            const res = results[top];
+            container.innerHTML = `
+                <div class="result-area">
+                    <div class="result-name">${res.name}</div>
+                    <div class="result-desc">${res.description}</div>
+                    <button class="reset-btn" id="restartBtn">🔄 Пройти заново</button>
+                </div>
+            `;
+            document.getElementById('restartBtn')?.addEventListener('click', () => {
+                currentIndex = 0;
+                scores = { guilt: 0, anger: 0, lose: 0, ice: 0 };
+                active = true;
+                render();
+            });
+            return;
+        }
+
+        if (currentIndex < questions.length) {
+            const q = questions[currentIndex];
+            let optsHtml = '';
+            q.options.forEach(opt => {
+                optsHtml += `<button class="option-btn" data-points="${opt.points}">${opt.text}</button>`;
+            });
+            container.innerHTML = `
+                <div class="question-text">${currentIndex+1}. ${q.text}</div>
+                <div class="options">${optsHtml}</div>
+                <div class="progress">вопрос ${currentIndex+1} из ${questions.length}</div>
+            `;
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const p = btn.getAttribute('data-points');
+                    if (p && scores[p] !== undefined) scores[p]++;
+                    currentIndex++;
+                    if (currentIndex === questions.length) active = false;
+                    render();
+                });
+            });
+        }
+    }
+
+    render();
+</script>
+</body>
+</html>
