@@ -51,7 +51,7 @@
 
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             padding-bottom: 18px;
             border-bottom: 1px solid rgba(184, 159, 212, 0.35);
         }
@@ -69,24 +69,6 @@
             letter-spacing: 3px;
             color: #b89fd4;
             text-transform: uppercase;
-        }
-
-        .counter {
-            text-align: center;
-            font-size: 0.85rem;
-            color: #8a7ba0;
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            padding: 10px 18px;
-            border-radius: 40px;
-            border: 1px solid rgba(184, 159, 212, 0.25);
-            box-shadow: 0 4px 14px rgba(155, 123, 184, 0.1);
-        }
-        .counter span {
-            color: #d18aae;
-            font-weight: 700;
         }
 
         .screen { display: none; animation: fadeIn 0.5s ease; }
@@ -109,7 +91,7 @@
             font-size: 0.9rem;
             color: #b89fd4;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
 
         .menu-buttons {
@@ -367,10 +349,6 @@
         <div class="name-sub">Елена Безносюк</div>
     </div>
 
-    <div class="counter">
-        Осталось <span id="counterValue">3</span> расклада сегодня
-    </div>
-
     <div id="mainScreen" class="screen active">
         <div class="greeting">Карты ждут тебя</div>
         <div class="greeting-small">выбери, что важно сейчас</div>
@@ -506,37 +484,6 @@
 
     const dayNames = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
 
-    let readingsLeft = 3;
-
-    function initCounter() {
-        const today = new Date().toDateString();
-        const saved = localStorage.getItem('tarotDate');
-        const savedCount = localStorage.getItem('tarotCount');
-        if (saved !== today) {
-            readingsLeft = 3;
-            localStorage.setItem('tarotDate', today);
-            localStorage.setItem('tarotCount', '3');
-        } else {
-            readingsLeft = parseInt(savedCount) || 0;
-        }
-        updateCounter();
-    }
-
-    function updateCounter() {
-        document.getElementById('counterValue').textContent = readingsLeft;
-    }
-
-    function useReading() {
-        if (readingsLeft <= 0) {
-            alert('На сегодня расклады закончились. Приходи завтра!');
-            return false;
-        }
-        readingsLeft--;
-        localStorage.setItem('tarotCount', readingsLeft);
-        updateCounter();
-        return true;
-    }
-
     function getRandomCard() {
         return cards[Math.floor(Math.random() * cards.length)];
     }
@@ -565,7 +512,6 @@
     }
 
     function openCard() {
-        if (!useReading()) return;
         const card = getRandomCard();
         document.getElementById('cardContent').innerHTML = `
             <div class="card-open">
@@ -583,7 +529,6 @@
     }
 
     function showWeekSpread() {
-        if (!useReading()) return;
         const weekCards = getRandomCards(7);
         let html = '<div class="week-grid">';
         weekCards.forEach((card, index) => {
@@ -603,7 +548,6 @@
     }
 
     function showAdvice() {
-        if (!useReading()) return;
         const card = getRandomCard();
         document.getElementById('adviceContainer').innerHTML = `
             <div class="card-open">
@@ -617,8 +561,6 @@
         `;
         showScreen('adviceScreen');
     }
-
-    initCounter();
 </script>
 </body>
 </html>
