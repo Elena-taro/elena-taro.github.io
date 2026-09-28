@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>К ТАРО нежно — Елена Безносюк</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #1a1225;
+            font-family: 'Inter', sans-serif;
+            color: #e8ddf0;
+            line-height: 1.5;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Эффект амбре — цветные пятна на фоне */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(155, 123, 184, 0.35) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(240, 168, 192, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(127, 107, 158, 0.2) 0%, transparent 60%);
+            z-index: 0;
+            animation: ambience 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambience {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            100% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 24px 20px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Шапка */
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(184, 159, 212, 0.2);
+        }
+        .name-main {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #e0c8f0;
+            margin-bottom: 4px;
+            text-shadow: 0 0 20px rgba(200, 150, 220, 0.4);
+        }
+        .name-sub {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: #b89fd4;
+            text-transform: uppercase;
+        }
+
+        /* Вкладки */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 60px;
+            padding: 6px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(184, 159, 212, 0.15);
+        }
+        .tab {
+            flex: 1;
+            padding: 12px 8px;
+            border-radius: 60px;
+            border: none;
+            background: transparent;
+            color: #b89fd4;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #9b7bb8 0%, #d18aae 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(155, 123, 184, 0.4);
+        }
+
+        /* Счётчик */
+        .counter {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #b89fd4;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+        .counter span {
+            color: #f0a8c0;
+            font-weight: 700;
+        }
+
+        /* Карточки */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(184, 159, 212, 0.2);
+            border-radius: 28px;
+            padding: 28px 22px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .screen { display: none; animation: fadeIn 0.5s ease; }
+        .screen.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Закрытая карта */
+        .card-back {
+            width: 180px;
+            height: 280px;
+            margin: 0 auto 20px;
+            background: linear-gradient(145deg, #3d2b50 0%, #5a3d70 100%);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 40px rgba(200, 150, 220, 0.3), inset 0 0 30px rgba(200, 150, 220, 0.1);
+            transition: all 0.4s;
+            border: 2px solid rgba(200, 150, 220, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .card-back::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(240, 168, 192, 0.2) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+        .card-back:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 60px rgba(200, 150, 220, 0.5);
+        }
+        .card-back .moon {
+            font-size: 3.5rem;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 15px rgba(240, 168, 192, 0.8));
+        }
+        .card-back .open-text {
+            font-size: 0.9rem;
+            color: #e0c8f0;
+            font-weight: 600;
+        }
+
+        /* Открытая карта */
+        .card-open {
+            animation: flipIn 0.6s ease;
+        }
+        @keyframes flipIn {
+            from { transform: rotateY(90deg); opacity: 0; }
+            to { transform: rotateY(0deg); opacity: 1; }
+        }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #f0c8e0;
+            margin-bottom: 16px;
+            text-shadow: 0 0 20px rgba(240, 168, 192, 0.4);
+        }
+
+        .card-block {
+            text-align: left;
+            margin-bottom: 14px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(184, 159, 212, 0.15);
+        }
+        .block-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .block-label.plus { color: #a8d89b; }
+        .block-label.minus { color: #e08fa0; }
+        .block-label.advice { color: #d9a13b; }
+        .block-text {
+            font-size: 0.9rem;
+            color: #d8cce8;
+            line-height: 1.5;
+        }
+
+        /* Расклад по сферам */
+        .sphere-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(184, 159, 212, 0.2);
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .sphere-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #b89fd4;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .sphere-card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f0c8e0;
+            margin-bottom: 6px;
+        }
+        .sphere-text {
+            font-size: 0.85rem;
+            color: #c8b8d8;
+            line-height: 1.5;
+        }
+
+        /* Поле для планов */
+        .plans-field {
+            margin-top: 16px;
+            text-align: left;
+        }
+        .plans-field label {
+            font-size: 0.75rem;
+            color: #b89fd4;
+            display: block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .plans-field textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(184, 159, 212, 0.3);
+            background: rgba(0, 0, 0, 0.2);
+            color: #e8ddf0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            resize: none;
+            min-height: 80px;
+        }
+        .plans-field textarea::placeholder {
+            color: #7a6a8a;
+        }
+
+        /* Неделя */
+        .week-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .day-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(184, 159, 212, 0.2);
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .day-name {
+            font-weight: 700;
+            color: #f0a8c0;
+            min-width: 44px;
+            font-size: 0.85rem;
+            padding-top: 3px;
+        }
+        .day-card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #e0c8f0;
+            margin-bottom: 4px;
+        }
+        .day-advice {
+            font-size: 0.8rem;
+            color: #b8a8c8;
+            font-style: italic;
+        }
+
+        /* Кнопки */
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(184, 159, 212, 0.4);
+            color: #d0b8e0;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-secondary:hover {
+            background: rgba(184, 159, 212, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #9b7bb8 0%, #d18aae 100%);
+            color: white;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 15px rgba(155, 123, 184, 0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(155, 123, 184, 0.5);
+        }
+
+        /* Кнопка записи */
+        .booking-section {
+            margin-top: 28px;
+            text-align: center;
+        }
+        .btn-booking {
+            background: linear-gradient(135deg, #f0a8c0 0%, #d18aae 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            box-shadow: 0 6px 20px rgba(209, 138, 174, 0.4);
+        }
+        .btn-booking:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(209, 138, 174, 0.6);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(184, 159, 212, 0.15);
+            font-size: 0.75rem;
+            color: #8a7ba0;
+        }
+
+        @media (max-width: 550px) {
+            .name-main { font-size: 2rem; }
+            .tab { font-size: 0.75rem; padding: 10px 4px; }
+            .card-back { width: 150px; height: 240px; }
+            .card-title { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="name-main">К ТАРО нежно</div>
+        <div class="name-sub">Елена Безносюк</div>
+    </div>
+
+    <div class="counter">
+        Осталось <span id="counterValue">3</span> расклада сегодня
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('card')">🌙 Карта дня</button>
+        <button class="tab" onclick="switchTab('spread')">✨ Расклад</button>
+        <button class="tab" onclick="switchTab('week')">📅 Неделя</button>
+    </div>
+
+    <!-- Карта дня -->
+    <div id="screen-card" class="screen active">
+        <div class="glass-card" id="cardContent">
+            <div class="card-back" onclick="openCard()">
+                <div class="moon">🌙</div>
+                <div class="open-text">Открыть карту дня</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Расклад по сферам -->
+    <div id="screen-spread" class="screen">
+        <div class="glass-card" id="spreadContent">
+            <div class="card-title" style="font-size:1.4rem;">Расклад на неделю</div>
+            <p style="color:#b8a8c8; font-size:0.85rem; margin-bottom:20px;">Три карты — три сферы жизни</p>
+            <div id="sphereResult"></div>
+            <div class="plans-field">
+                <label>Планы на неделю (необязательно)</label>
+                <textarea id="plansInput" placeholder="Переговоры в среду, встреча с подругой в пятницу..."></textarea>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn-primary" onclick="makeSpread()">🔄 Новый расклад</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Неделя -->
+    <div id="screen-week" class="screen">
+        <div class="glass-card" id="weekContent">
+            <div class="card-title" style="font-size:1.4rem;">Прогноз на неделю</div>
+            <div class="nav-buttons" style="margin-top:16px; margin-bottom:16px;">
+                <button class="btn-primary" onclick="makeWeek()">🔄 Получить прогноз</button>
+            </div>
+            <div id="weekResult"></div>
+        </div>
+    </div>
+
+    <div class="booking-section">
+        <a href="https://t.me/Elena_Beznosyuk" target="_blank" class="btn-booking">✨ Хочу на консультацию</a>
+    </div>
+
+    <div class="footer">
+        • Таро найдёт ответы на твои вопросы •
+    </div>
+</div>
+
+<script>
+    const cards = [
+        { name: "Шут", plus: "Начало нового пути, свобода, доверие к жизни, лёгкость.", minus: "Безрассудство, страх первого шага, инфантильность.", advice: "Сделайте шаг в неизвестность, но проверьте, не прячетесь ли вы за игрой." },
+        { name: "Маг", plus: "Вы обладаете всеми ресурсами для цели, воля, концентрация.", minus: "Манипуляция, самообман, желание контролировать всё.", advice: "Действуйте осознанно, но не пытайтесь управлять всем." },
+        { name: "Верховная Жрица", plus: "Интуиция, внутреннее знание, тайна, терпение.", minus: "Игнорирование интуиции, закрытость, страх раскрытия.", advice: "Прислушайтесь к тихому голосу внутри — он знает ответ." },
+        { name: "Императрица", plus: "Творчество, изобилие, чувственность, забота.", minus: "Застой, зависимость от внешнего, подавление желаний.", advice: "Позвольте себе творить и получать — вы заслуживаете." },
+        { name: "Император", plus: "Структура, порядок, власть, стабильность, дисциплина.", minus: "Деспотизм, жёсткость, страх потерять контроль.", advice: "Стройте порядок, но не превращайте его в клетку." },
+        { name: "Иерофант", plus: "Традиции, наставничество, духовная мудрость.", minus: "Догматизм, слепое следование правилам.", advice: "Берите мудрость из традиций, но сверяйте с собой." },
+        { name: "Влюблённые", plus: "Выбор, любовь, гармония, ценностное решение.", minus: "Неспособность выбрать, разрыв, неискренность.", advice: "Делайте выбор сердцем, но не забывайте о себе." },
+        { name: "Колесница", plus: "Движение, победа, воля, преодоление препятствий.", minus: "Агрессия, потеря контроля, путь без цели.", advice: "Ведите свою колесницу, но знайте, куда вы едете." },
+        { name: "Сила", plus: "Внутренняя сила, терпение, мягкость, управление страстями.", minus: "Слабость, агрессия, подавление себя, ярость.", advice: "Сила — в мягкости. Не давите, а ведите." },
+        { name: "Отшельник", plus: "Уединение, мудрость, поиск истины, внутренний свет.", minus: "Одиночество, изоляция, пессимизм.", advice: "Побудьте в тишине, но не отгораживайтесь от жизни." },
+        { name: "Колесо Фортуны", plus: "Перемены, циклы, удача, судьба, смена фазы.", minus: "Сопротивление переменам, фатализм, страх.", advice: "Примите перемены — они несут рост." },
+        { name: "Справедливость", plus: "Честность, правда, баланс, ответственность.", minus: "Несправедливость, самообвинение, отрицание ошибок.", advice: "Посмотрите правде в глаза — даже если неудобна." },
+        { name: "Повешенный", plus: "Новый взгляд, переоценка, терпение.", minus: "Жертвенность без смысла, пассивность, саморазрушение.", advice: "Если застряли — смените угол обзора." },
+        { name: "Смерть", plus: "Завершение, трансформация, освобождение от старого.", minus: "Сопротивление изменениям, страх потерь.", advice: "Не бойтесь отпускать отжившее — оно освобождает место." },
+        { name: "Умеренность", plus: "Баланс, гармония, терпение, исцеление.", minus: "Неумение сохранять равновесие, крайности.", advice: "Соединяйте противоположности — в этом мудрость." },
+        { name: "Дьявол", plus: "Осознание тени, выход из зависимостей, власть над собой.", minus: "Зависимость, манипуляции, саморазрушение.", advice: "Признайте свою тень, чтобы перестать быть её рабом." },
+        { name: "Башня", plus: "Крушение иллюзий, прорыв, освобождение.", minus: "Катастрофа, потеря опоры, разрушение.", advice: "Разрушение — путь к свободе. Дайте себе время." },
+        { name: "Звезда", plus: "Надежда, исцеление, вдохновение, вера.", minus: "Потеря веры, безнадёжность, самообман.", advice: "Верьте в будущее — даже когда не видите пути." },
+        { name: "Луна", plus: "Интуиция, сны, подсознание, воображение.", minus: "Страх, иллюзия, тревога, неясность.", advice: "Идите в темноту со свечой доверия к себе." },
+        { name: "Солнце", plus: "Радость, успех, ясность, тепло, оптимизм.", minus: "Ослепление гордыней, избыток света без тени.", advice: "Радуйтесь и сияйте, но смотрите под ноги." },
+        { name: "Суд", plus: "Пробуждение, возрождение, прощение, новый уровень.", minus: "Самоосуждение, неспособность отпустить прошлое.", advice: "Пора снять старые оковы и начать заново." },
+        { name: "Мир", plus: "Завершение, целостность, гармония, достижение цели.", minus: "Разрозненность, страх финала.", advice: "Вы пришли. Отпразднуйте. А затем — новый цикл." },
+        { name: "Туз Жезлов", plus: "Новый импульс, вдохновение, энергия, начало.", minus: "Энтузиазм без плана, импульсивность.", advice: "Зажгите огонь, но продумайте, на чём он будет гореть." },
+        { name: "2 Жезлов", plus: "Выбор, планирование, взвешивание решений.", minus: "Страх ошибиться, откладывание.", advice: "У вас есть карта — пора делать ход." },
+        { name: "3 Жезлов", plus: "Ожидание результатов, расширение горизонтов.", minus: "Нетерпение, сомнение в будущем.", advice: "Ваше дело растёт — наберитесь терпения." },
+        { name: "4 Жезлов", plus: "Стабильность, радость, дом, завершение этапа.", minus: "Остановка, самоуспокоенность, боязнь выйти из зоны.", advice: "Отпразднуйте успех, а затем двигайтесь дальше." },
+        { name: "5 Жезлов", plus: "Конкуренция, спор, вызов, поиск места.", minus: "Конфликт, агрессия, пустая борьба.", advice: "Найдите в противостоянии вызов — но не разжигайте войну." },
+        { name: "6 Жезлов", plus: "Признание, победа, лидерство, движение вперёд.", minus: "Зазнайство, обесценивание других.", advice: "Признайте победу, но оставайтесь открытыми." },
+        { name: "7 Жезлов", plus: "Смелость отстоять своё, защита границ.", minus: "Паранойя, излишняя оборона, страх проиграть.", advice: "Держите границы, но не превращайте их в крепость." },
+        { name: "8 Жезлов", plus: "Быстрота, активность, движение, ясность.", minus: "Торопливость, суета, хаос.", advice: "Действуйте быстро, но не теряйте контроль." },
+        { name: "9 Жезлов", plus: "Упорство, стойкость, последний рывок.", minus: "Паранойя, хроническая усталость.", advice: "Вы почти у цели — соберитесь с силами." },
+        { name: "10 Жезлов", plus: "Ответственность, достижение, завершение пути.", minus: "Перегрузка, выгорание, всё на своих плечах.", advice: "Вы не можете нести всё в одиночку — делегируйте." },
+        { name: "Паж Жезлов", plus: "Новое начинание, энтузиазм, интерес.", minus: "Несерьёзность, отсутствие глубины.", advice: "Отнеситесь к новому делу с интересом, но не теряйте глубину." },
+        { name: "Рыцарь Жезлов", plus: "Энергия, харизма, действие, вдохновение.", minus: "Импульсивность, агрессия, необдуманность.", advice: "Ведите за собой, но не сжигайте мосты." },
+        { name: "Королева Жезлов", plus: "Уверенность, страсть, творчество, тепло.", minus: "Эгоцентризм, доминирование.", advice: "Сияйте и ведите, но дайте свет и другим." },
+        { name: "Король Жезлов", plus: "Власть, предприимчивость, смелость, стратегия.", minus: "Деспотизм, высокомерие, контроль.", advice: "Управляйте мудро, помните, что за вами стоят люди." },
+        { name: "Туз Чаш", plus: "Любовь, начало чувств, открытость.", minus: "Закрытость, нежелание чувствовать.", advice: "Откройте своё сердце — даже если страшно." },
+        { name: "2 Чаш", plus: "Гармония в отношениях, партнёрство.", minus: "Дисбаланс, зависимость, идеализация.", advice: "Любите и будьте любимы, но сохраняйте себя." },
+        { name: "3 Чаш", plus: "Радость, дружба, праздник, поддержка.", minus: "Зависимость от группы, поверхностность.", advice: "Радуйтесь вместе, но не растворяйтесь в других." },
+        { name: "4 Чаш", plus: "Размышления, оценка, выход из зоны комфорта.", minus: "Скука, пассивность, игнорирование возможностей.", advice: "Посмотрите, что рядом — возможно, вы пропускаете важное." },
+        { name: "5 Чаш", plus: "Принятие потерь, уход от прошлого, освобождение.", minus: "Горе, зацикленность на утрате, жалость к себе.", advice: "Потеря — не конец. Что вы можете взять из этого опыта?" },
+        { name: "6 Чаш", plus: "Ностальгия, простота, возвращение к истокам.", minus: "Жизнь прошлым, детские травмы, страх взросления.", advice: "Берите из прошлого лучшее, но не живите там." },
+        { name: "7 Чаш", plus: "Иллюзии, мечты, выбор, фантазии.", minus: "Самообман, зависимость от ложных надежд.", advice: "Мечтайте, но отделяйте иллюзии от реальности." },
+        { name: "8 Чаш", plus: "Уход от старого, поиск глубины, переосмысление.", minus: "Страх перемен, потерянность, побег от проблем.", advice: "Иногда надо уйти, чтобы найти себя." },
+        { name: "9 Чаш", plus: "Удовлетворение, исполнение желаний, комфорт.", minus: "Самонадеянность, изоляция, материализм.", advice: "Наслаждайтесь счастьем, но помните о других." },
+        { name: "10 Чаш", plus: "Гармония в семье, полное счастье, любовь.", minus: "Желание удержать идеальную картинку.", advice: "Любовь — это не только праздник, но и работа." },
+        { name: "Паж Чаш", plus: "Влюблённость, чувствительность, искренность.", minus: "Обидчивость, незрелость, зависимость от эмоций.", advice: "Будьте открыты к чувствам, но не тоните в них." },
+        { name: "Рыцарь Чаш", plus: "Романтика, идеализм, страсть, импульс чувств.", minus: "Непостоянство, иллюзия в любви.", advice: "Следуйте за сердцем, но не отключайте разум." },
+        { name: "Королева Чаш", plus: "Любовь, чуткость, забота, понимание, эмпатия.", minus: "Жертвенность, эмоциональная зависимость.", advice: "Дарите любовь, но не забывайте о себе." },
+        { name: "Король Чаш", plus: "Эмоциональная зрелость, сострадание, мудрость.", minus: "Зажатость, подавление эмоций, манипуляция.", advice: "Владей своими эмоциями, а не они тобой." },
+        { name: "Туз Мечей", plus: "Прозрение, ясность, решение, истина.", minus: "Резкость, конфликт, разрушение иллюзий без опоры.", advice: "Скажите правду, но выберите правильное время." },
+        { name: "2 Мечей", plus: "Трудный выбор, поиск равновесия.", minus: "Самообман, избегание выбора, страх правды.", advice: "Лучше ошибиться, чем не выбрать вообще." },
+        { name: "3 Мечей", plus: "Принятие боли, освобождение от иллюзий.", minus: "Боль, разрыв, предательство, самообвинение.", advice: "Вы ранены. Время залечивать раны, а не носить их." },
+        { name: "4 Мечей", plus: "Отдых, восстановление, пауза, перезагрузка.", minus: "Изоляция, пассивность, застой.", advice: "Дайте себе передышку. Но не застревайте в ней." },
+        { name: "5 Мечей", plus: "Честность с собой, осознание поражения.", minus: "Конфликт, победа любой ценой, чувство вины.", advice: "Победа не всегда оправдана. Спросите себя, стоила ли она того." },
+        { name: "6 Мечей", plus: "Переход к лучшему, уход от проблем, покой.", minus: "Побег от проблем, страх перемен.", advice: "Двигайтесь к лучшему, но не убегайте от себя." },
+        { name: "7 Мечей", plus: "Стратегия, хитрость, защита интересов.", minus: "Обман, нечестность, избегание ответственности.", advice: "Вы умнее, чем кажется. Используйте это честно." },
+        { name: "8 Мечей", plus: "Осознание ограничений, поиск выхода.", minus: "Ограничения, страх, самоизоляция.", advice: "Вы не в ловушке — это ваши страхи удерживают вас." },
+        { name: "9 Мечей", plus: "Принятие страха, поиск опоры.", minus: "Тревога, ночные кошмары, самобичевание.", advice: "Ваши страхи — это всего лишь мысли. Не верьте им." },
+        { name: "10 Мечей", plus: "Освобождение от долгого страдания.", minus: "Полный крах, депрессия, ощущение безнадёжности.", advice: "Это дно. И единственный путь отсюда — вверх." },
+        { name: "Паж Мечей", plus: "Острый ум, внимание к деталям, поиск истины.", minus: "Излишняя критика, недоверие, ирония.", advice: "Ищите истину, но не раните других своей правдой." },
+        { name: "Рыцарь Мечей", plus: "Быстрота, решимость, уверенность.", minus: "Агрессия, поспешность, резкость.", advice: "Действуйте быстро, но не перерезайте себе путь." },
+        { name: "Королева Мечей", plus: "Ясность ума, прямота, справедливость.", minus: "Холод, излишняя критичность.", advice: "Будьте честны, но с теплом." },
+        { name: "Король Мечей", plus: "Интеллект, власть, авторитет, решения.", minus: "Деспотизм, высокомерие, давление.", advice: "Управляйте с мудростью, а не с превосходством." },
+        { name: "Туз Пентаклей", plus: "Финансовый старт, ресурсы, стабильность.", minus: "Неумение пользоваться ресурсами, страх денег.", advice: "Возьмите своё — но знайте, куда это применить." },
+        { name: "2 Пентаклей", plus: "Гибкость, баланс доходов, распределение.", minus: "Нестабильность, метания, неумение планировать.", advice: "Управляйте потоками, чтобы они не управляли вами." },
+        { name: "3 Пентаклей", plus: "Командная работа, сотрудничество, реализация.", minus: "Работа в одиночку, недоверие к другим.", advice: "Делайте своё дело, но не отказывайтесь от помощи." },
+        { name: "4 Пентаклей", plus: "Стабильность, накопление, уверенность.", minus: "Жадность, страх потерь, закрытость.", advice: "Сохраняйте, но не становитесь рабом накоплений." },
+        { name: "5 Пентаклей", plus: "Поиск выхода, принятие помощи.", minus: "Бедность, чувство ущербности, отчаяние.", advice: "Вы не одиноки — даже если кажется иначе." },
+        { name: "6 Пентаклей", plus: "Щедрость, помощь, взаимность.", minus: "Зависимость от других, чувство вины.", advice: "Умейте и давать, и брать без стыда." },
+        { name: "7 Пентаклей", plus: "Терпение, ожидание результата, оценка.", minus: "Нетерпение, сомнение в плодах.", advice: "Ваши семена дадут плоды — дайте им время." },
+        { name: "8 Пентаклей", plus: "Упорный труд, мастерство, развитие.", minus: "Зацикленность на процессе, выгорание.", advice: "Работайте усердно, но не теряйте радость." },
+        { name: "9 Пентаклей", plus: "Финансовая независимость, комфорт.", minus: "Гордыня, оторванность от других.", advice: "Наслаждайтесь свободой, но делитесь теплом." },
+        { name: "10 Пентаклей", plus: "Наследие, семейные финансы, стабильность.", minus: "Конфликты из-за наследства, материализм.", advice: "Ваше наследие — это не только деньги." },
+        { name: "Паж Пентаклей", plus: "Планирование, практичность, обучение.", minus: "Несерьёзность, отсутствие целей.", advice: "Учитесь и практикуйтесь — это ваш фундамент." },
+        { name: "Рыцарь Пентаклей", plus: "Ответственность, упорство, надёжность.", minus: "Медлительность, консерватизм, скука.", advice: "Двигайтесь вперёд, даже если шаг маленький." },
+        { name: "Королева Пентаклей", plus: "Заботливость, практичность, уют, ресурсы.", minus: "Гиперопека, материализм, страх бедности.", advice: "Создавайте тёплый дом и финансы, но не забывайте о себе." },
+        { name: "Король Пентаклей", plus: "Стабильность, управление ресурсами, процветание.", minus: "Жадность, консерватизм, властность.", advice: "Стройте империю, но помните, что главное — не только деньги." }
+    ];
+
+    const dayNames = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
+    const sphereNames = ["Работа и деньги", "Отношения", "Общий вайб недели"];
+    const sphereKeys = ["plus", "minus", "advice"];
+
+    let readingsLeft = 3;
+    let currentTab = 'card';
+
+    // Проверка счётчика
+    function initCounter() {
+        const today = new Date().toDateString();
+        const saved = localStorage.getItem('tarotDate');
+        const savedCount = localStorage.getItem('tarotCount');
+        if (saved !== today) {
+            readingsLeft = 3;
+            localStorage.setItem('tarotDate', today);
+            localStorage.setItem('tarotCount', '3');
+        } else {
+            readingsLeft = parseInt(savedCount) || 0;
+        }
+        updateCounter();
+    }
+
+    function updateCounter() {
+        document.getElementById('counterValue').textContent = readingsLeft;
+    }
+
+    function useReading() {
+        if (readingsLeft <= 0) {
+            alert('На сегодня расклады закончились. Приходи завтра!');
+            return false;
+        }
+        readingsLeft--;
+        localStorage.setItem('tarotCount', readingsLeft);
+        updateCounter();
+        return true;
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.querySelector(`.tab[onclick*="${tab}"]`).classList.add('active');
+        document.getElementById('screen-' + tab).classList.add('active');
+    }
+
+    function getRandomCard() {
+        return cards[Math.floor(Math.random() * cards.length)];
+    }
+
+    function getRandomCards(count) {
+        const shuffled = [...cards].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, count);
+    }
+
+    // Карта дня
+    function openCard() {
+        if (!useReading()) return;
+        const card = getRandomCard();
+        const container = document.getElementById('cardContent');
+        container.innerHTML = `
+            <div class="card-open">
+                <div class="card-title">${card.name}</div>
+                <div class="card-block">
+                    <div class="block-label plus">В плюсе</div>
+                    <div class="block-text">${card.plus}</div>
+                </div>
+                <div class="card-block">
+                    <div class="block-label minus">В минусе</div>
+                    <div class="block-text">${card.minus}</div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn-primary" onclick="resetCard()">🔄 Ещё карту</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function resetCard() {
+        document.getElementById('cardContent').innerHTML = `
+            <div class="card-back" onclick="openCard()">
+                <div class="moon">🌙</div>
+                <div class="open-text">Открыть карту дня</div>
+            </div>
+        `;
+    }
+
+    // Расклад по сферам
+    function makeSpread() {
+        if (!useReading()) return;
+        const result = getRandomCards(3);
+        const plans = document.getElementById('plansInput').value.trim();
+        let html = '';
+        result.forEach((card, i) => {
+            const field = sphereKeys[i];
+            html += `
+                <div class="sphere-card">
+                    <div class="sphere-title">${sphereNames[i]}</div>
+                    <div class="sphere-card-name">${card.name}</div>
+                    <div class="sphere-text">${card[field]}</div>
+                </div>
+            `;
+        });
+        if (plans) {
+            html += `<p style="color:#d0b8e0; font-size:0.85rem; margin-top:12px; font-style:italic;">С учётом ваших планов: «${plans}» — карты советуют обратить внимание на эти сферы.</p>`;
+        }
+        document.getElementById('sphereResult').innerHTML = html;
+    }
+
+    // Неделя
+    function makeWeek() {
+        if (!useReading()) return;
+        const weekCards = getRandomCards(7);
+        let html = '<div class="week-grid">';
+        weekCards.forEach((card, index) => {
+            html += `
+                <div class="day-card">
+                    <div class="day-name">${dayNames[index]}</div>
+                    <div>
+                        <div class="day-card-name">${card.name}</div>
+                        <div class="day-advice">${card.advice}</div>
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+        document.getElementById('weekResult').innerHTML = html;
+    }
+
+    // Инициализация
+    initCounter();
+</script>
+</body>
+</html>
