@@ -229,41 +229,37 @@
             line-height: 1.5;
         }
 
-        .week-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .day-card {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            border-radius: 18px;
-            padding: 14px 18px;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            box-shadow: 0 4px 14px rgba(155, 123, 184, 0.08);
+        /* Поле для вопроса */
+        .question-field {
+            margin-bottom: 20px;
             text-align: left;
         }
-        .day-name {
-            font-weight: 700;
-            color: #d18aae;
-            min-width: 44px;
-            font-size: 0.85rem;
-            padding-top: 3px;
-        }
-        .day-card-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #7f6b9e;
-            margin-bottom: 4px;
-        }
-        .day-advice {
-            font-size: 0.82rem;
+        .question-field label {
+            display: block;
+            font-size: 0.8rem;
             color: #8a7ba0;
-            font-style: italic;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .question-field textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            border: 1px solid rgba(184, 159, 212, 0.4);
+            background: rgba(255, 255, 255, 0.7);
+            color: #3d2b50;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            resize: none;
+            min-height: 70px;
+        }
+        .question-field textarea::placeholder {
+            color: #b0a0c0;
+        }
+        .question-field textarea:focus {
+            outline: none;
+            border-color: #b89fd4;
+            background: white;
         }
 
         .nav-buttons {
@@ -355,8 +351,8 @@
 
         <div class="menu-buttons">
             <button class="menu-btn" onclick="showCardOfDay()">🔮 Карта дня</button>
-            <button class="menu-btn" onclick="showWeekSpread()">📅 Расклад на неделю</button>
-            <button class="menu-btn" onclick="showAdvice()">💬 Карта совет</button>
+            <button class="menu-btn" onclick="showQuestion()">💬 Вопрос-ответ</button>
+            <button class="menu-btn" onclick="showAdvice()">✨ Карта совет</button>
         </div>
     </div>
 
@@ -372,14 +368,20 @@
         </div>
     </div>
 
-    <div id="weekScreen" class="screen">
-        <div class="glass-card">
-            <div class="card-title" style="font-size:1.5rem;">Расклад на неделю</div>
-            <div id="weekContainer"></div>
+    <!-- Вопрос-ответ -->
+    <div id="questionScreen" class="screen">
+        <div class="glass-card" id="questionContent">
+            <div class="card-title" style="font-size:1.4rem;">Задай свой вопрос</div>
+            <p style="color:#8a7ba0; font-size:0.85rem; margin-bottom:20px;">Напиши, что тебя волнует — карты дадут ответ</p>
+            <div class="question-field">
+                <textarea id="userQuestion" placeholder="О чём ты хочешь спросить?"></textarea>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn-primary" onclick="getAnswer()">🔮 Получить ответ</button>
+            </div>
         </div>
         <div class="nav-buttons">
             <button class="btn-secondary" onclick="goHome()">← Назад</button>
-            <button class="btn-primary" onclick="showWeekSpread()">🔄 Новый расклад</button>
         </div>
     </div>
 
@@ -482,15 +484,8 @@
         { name: "Король Пентаклей", short: "Процветание, надёжность, ресурсы.", advice: "Стройте империю, но помните, что главное — не только деньги." }
     ];
 
-    const dayNames = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
-
     function getRandomCard() {
         return cards[Math.floor(Math.random() * cards.length)];
-    }
-
-    function getRandomCards(count) {
-        const shuffled = [...cards].sort(() => Math.random() - 0.5);
-        return shuffled.slice(0, count);
     }
 
     function showScreen(screenId) {
@@ -528,23 +523,38 @@
         `;
     }
 
-    function showWeekSpread() {
-        const weekCards = getRandomCards(7);
-        let html = '<div class="week-grid">';
-        weekCards.forEach((card, index) => {
-            html += `
-                <div class="day-card">
-                    <div class="day-name">${dayNames[index]}</div>
-                    <div>
-                        <div class="day-card-name">${card.name}</div>
-                        <div class="day-advice">${card.short}</div>
-                    </div>
+    function showQuestion() {
+        document.getElementById('questionContent').innerHTML = `
+            <div class="card-title" style="font-size:1.4rem;">Задай свой вопрос</div>
+            <p style="color:#8a7ba0; font-size:0.85rem; margin-bottom:20px;">Напиши, что тебя волнует — карты дадут ответ</p>
+            <div class="question-field">
+                <textarea id="userQuestion" placeholder="О чём ты хочешь спросить?"></textarea>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn-primary" onclick="getAnswer()">🔮 Получить ответ</button>
+            </div>
+        `;
+        showScreen('questionScreen');
+    }
+
+    function getAnswer() {
+        const question = document.getElementById('userQuestion').value.trim();
+        const card = getRandomCard();
+        const questionText = question ? `<p style="color:#8a7ba0; font-size:0.85rem; margin-bottom:16px; font-style:italic;">Твой вопрос: «${question}»</p>` : '';
+        document.getElementById('questionContent').innerHTML = `
+            <div class="card-open">
+                ${questionText}
+                <div class="card-title">${card.name}</div>
+                <div class="card-meaning">${card.short}</div>
+                <div class="card-block">
+                    <div class="block-label">Совет</div>
+                    <div class="block-text">${card.advice}</div>
                 </div>
-            `;
-        });
-        html += '</div>';
-        document.getElementById('weekContainer').innerHTML = html;
-        showScreen('weekScreen');
+                <div class="nav-buttons">
+                    <button class="btn-primary" onclick="showQuestion()">🔄 Задать новый вопрос</button>
+                </div>
+            </div>
+        `;
     }
 
     function showAdvice() {
